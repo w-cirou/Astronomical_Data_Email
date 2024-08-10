@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  updateTableFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dev.wcirou.UpdateTableFunctionHandler::handleRequest
+      Runtime: java17
+      CodeUri: MoonData
+      MemorySize: 512
+      Timeout: 15
+      Role: arn:aws:iam::654654364871:role/UpdateTableAndPublishTopicIAMRole
+      Environment:
+        Variables:
+          TABLE_NAME: MoonData
+          TABLE_ARN: arn:aws:dynamodb:us-east-2:654654364871:table/MoonData
+          TOPIC_ARN: arn:aws:sns:us-east-2:654654364871:MoonDataEmail
+  patchTableFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dev.wcirou.PatchTableFunctionHandler::handleRequest
+      Runtime: java17
+      CodeUri: MoonData
+      MemorySize: 512
+      Timeout: 15
+      Role: arn:aws:iam::654654364871:role/UpdateTableAndPublishTopicIAMRole
+      SnapStart:
+        ApplyOn: PublishedVersions
+      Environment:
+        Variables:
+          TABLE_NAME: MoonData
+          TABLE_ARN: arn:aws:dynamodb:us-east-2:654654364871:table/MoonData
+          TOPIC_ARN: arn:aws:sns:us-east-2:654654364871:MoonDataEmail
+      Events:
+        ApiGatewayTrigger:
+          Type: HttpApi
+          Properties:
+            Path: /patchtable
+            Method: PATCH
+  sendEmailFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dev.wcirou.SendEmailFunctionHandler::handleRequest
+      Runtime: java17
+      CodeUri: MoonData
+      MemorySize: 512
+      Timeout: 15
+      Role: arn:aws:iam::654654364871:role/SendEmailFunctionIAMRole
+      Environment:
+        Variables:
+          TABLE_NAME: MoonData
+  getItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dev.wcirou.GetItemFunctionHandler::handleRequest
+      Runtime: java17
+      CodeUri: MoonData
+      MemorySize: 512
+      Timeout: 15
+      Role: arn:aws:iam::654654364871:role/GetItemFunctionIAMRole
+      Environment:
+        Variables:
+          TABLE_NAME: MoonData
+      Events:
+        ApiGatewayTrigger:
+          Type: HttpApi
+          Properties:
+            Path: /getitem/{partitionKey}/{sortKey}
+            Method: GET

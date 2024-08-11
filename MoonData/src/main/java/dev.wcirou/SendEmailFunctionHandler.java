@@ -19,8 +19,8 @@ public class SendEmailFunctionHandler implements RequestHandler<SNSEvent, Void> 
             .region(Region.US_EAST_2)
             .build();
     //Creating Email Components
-    private static final String sender = "wcirou@students.kennesaw.edu";
-    private static final String recipient = "wcirou@students.kennesaw.edu";
+    private static final String sender = "XXXXXXXXXXXXX";
+    private static final String recipient = "XXXXXXXXXXXXX";
     //Getting Logger
     private static final Logger logger = LoggerFactory.getLogger(SendEmailFunctionHandler.class);
     //Creating Class Wide DynamoDB Client
@@ -77,8 +77,9 @@ public class SendEmailFunctionHandler implements RequestHandler<SNSEvent, Void> 
                         services.sendEmail(sesClient, sender, recipient, "Moon Data Update", message , bodyHtml1);
                         services.sendEmail(sesClient, sender, recipient, "Planet Visibility Update", message2, bodyHtml2);
                         services.sendEmail(sesClient, sender, recipient, "Sun Data Update", message3, bodyHtml3);
-                        logger.info("Moon Data was sent to wcirou@students.kennesaw.edu: " + message);
-                        logger.info("Planet Visibility Data was sent to wcirou@students.kennesaw.edu: " + message2);
+                        logger.info("Moon Data was sent to "+recipient+": " + message);
+                        logger.info("Planet Visibility Data was sent to "+recipient+": " + message2);
+                        logger.info("Sun Data was sent to "+recipient+": " + message3);
                     } else {
                         logger.info("Error, SNS Event did not contain expected confirmation message that the table was updated");
                     }

@@ -14,15 +14,9 @@ import static org.mockito.Mockito.mock;
 //    @InjectMocks
 //    SendEmailFunctionHandler handler;
 //
-//    private Map<String, String> environmentVariables;
 //
 //    @BeforeEach
 //    public void initialize_context_logger_and_handler() {
-////        environmentVariables = new HashMap<>();
-////        environmentVariables.put("AWS_ACCESS_KEY_ID", "AKIAZQ3DQ3TDQG5HJQSR");
-////        environmentVariables.put("AWS_SECRET_ACCESS_KEY", "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");
-//
-////        when(System.getenv()).thenReturn(environmentVariables);
 //        context = mock(Context.class);
 //        logger = mock(LambdaLogger.class);
 //        handler = new SendEmailFunctionHandler();
